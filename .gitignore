@@ -1,0 +1,29 @@
+# Ignore Python and local environment files
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+ENV/
+
+# SQLite DB
+bot_database.db
+
+# OS files
+.DS_Store
+
+# Editors
+.vscode/
+.idea/
+
+# Env files
+.env
+.env.local
+
+# Logs
+*.log
+
+# Docker
+*.tar
+
