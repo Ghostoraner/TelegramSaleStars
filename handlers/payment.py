@@ -31,7 +31,6 @@ async def create_invoice(message: types.Message, state: FSMContext):
     if amount < 10:
         return await message.answer("⚠️ Минимальная сумма пополнения — 10₽.")
 
-    # Payload = ID пользователя
     try:
         inv = await crypto.create_invoice(
             asset='USDT',
@@ -58,7 +57,6 @@ async def create_invoice(message: types.Message, state: FSMContext):
 async def check_p(callback: types.CallbackQuery, state: FSMContext):
     user_id = callback.from_user.id
 
-    # Ищем оплаченные чеки
     try:
         invoices = await crypto.get_invoices(status='paid')
         found_invoice = None
@@ -71,7 +69,7 @@ async def check_p(callback: types.CallbackQuery, state: FSMContext):
 
         if found_invoice:
             amount = float(found_invoice.amount) if found_invoice.fiat == 'RUB' else float(
-                found_invoice.amount)  # упрощение
+                found_invoice.amount)  
 
             await db.update_balance(user_id, amount)
             await callback.message.edit_text(
