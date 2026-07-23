@@ -4,7 +4,6 @@ from aiogram import Bot, Dispatcher
 from config import BOT_TOKEN
 import database as db
 
-# Импортируем все хендлеры
 from handlers import start, payment, stars, admin
 
 logging.basicConfig(level=logging.INFO)
@@ -15,8 +14,7 @@ async def main():
     bot = Bot(token=BOT_TOKEN)
     dp = Dispatcher()
 
-    # ПОДКЛЮЧАЙТЕ КАЖДЫЙ РОУТЕР ТОЛЬКО ОДИН РАЗ!
-    # Если вы добавили админку, убедитесь, что список выглядит так:
+    
     dp.include_routers(
         admin.router,
         start.router,
@@ -24,7 +22,7 @@ async def main():
         stars.router
     )
 
-    print("🚀 Бот запущен!")
+    print("Working...")
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
