@@ -7,7 +7,7 @@ async def send_stars_transaction(recipient_username: str, amount: int):
     try:
         wallet = await WalletV4R2.from_mnemonic(provider=provider, mnemonics=WALLET_MNEMONIC.split())
 
-        # Орієнтовна ціна в TON (1 зірка ≈ 0.015 TON + запас)
+       
         ton_to_send = int(amount * 0.015 * 10 ** 9)
 
         payload = (
@@ -18,7 +18,7 @@ async def send_stars_transaction(recipient_username: str, amount: int):
         )
 
         balance = await wallet.get_balance()
-        # Проверка баланса кошелька бота
+    
         if balance < ton_to_send + 50_000_000:
             return False, "E_LOW_BALANCE_BOT"
 
