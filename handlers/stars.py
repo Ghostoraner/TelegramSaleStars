@@ -65,7 +65,7 @@ async def confirm(message: types.Message, state: FSMContext):
     data = await state.get_data()
     username = message.text.strip()
 
-    # Небольшая очистка юзернейма, если скинули ссылку
+   
     if "t.me/" in username:
         username = username.split("t.me/")[-1].replace("/", "")
     if not username.startswith("@"):
@@ -90,20 +90,20 @@ async def final_step(callback: types.CallbackQuery, state: FSMContext):
     user_id = callback.from_user.id
     u = await db.get_user(user_id)
 
-    # Повторная проверка баланса
+  
     if u['balance'] < data['price']:
         return await callback.answer("❌ Недостаточно средств на балансе!", show_alert=True)
 
     await callback.message.edit_text("⏳ <b>Обработка транзакции в блокчейне...</b>\nПожалуйста, подождите.",
                                      parse_mode="HTML")
 
-    # Отправка звезд
+
     success, msg = await send_stars_transaction(data['username'], data['count'])
 
     if success:
-        # Списываем баланс
+      
         await db.update_balance(user_id, -data['price'])
-        # Сохраняем в историю заказов
+     
         await db.add_order(user_id, data['count'], data['price'], data['username'])
 
         await callback.message.edit_text(
