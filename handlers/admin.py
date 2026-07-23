@@ -10,7 +10,6 @@ from config import ADMIN_ID
 router = Router()
 
 
-# Проверка на админа (фильтр)
 def is_admin(message: types.Message):
     return message.from_user.id == ADMIN_ID
 
@@ -38,7 +37,7 @@ async def admin_stats(message: types.Message):
     await message.answer(text, parse_mode="HTML")
 
 
-# --- Логика Рассылки ---
+
 @router.message(F.text == "📢 Рассылка", is_admin)
 async def start_mailing(message: types.Message, state: FSMContext):
     await message.answer("Введите текст рассылки (можно с фото):", reply_markup=kb.admin_cancel)
@@ -55,7 +54,7 @@ async def process_mailing(message: types.Message, state: FSMContext, bot: Bot):
         try:
             await bot.copy_message(chat_id=user_id, from_chat_id=message.chat.id, message_id=message.message_id)
             count += 1
-            await asyncio.sleep(0.05)  # Защита от спам-фильтра
+            await asyncio.sleep(0.05)  
         except:
             continue
 
@@ -63,7 +62,7 @@ async def process_mailing(message: types.Message, state: FSMContext, bot: Bot):
     await state.clear()
 
 
-# --- Логика изменения баланса ---
+
 @router.message(F.text == "💰 Изменить баланс", is_admin)
 async def admin_change_bal(message: types.Message, state: FSMContext):
     await message.answer("Введите ID пользователя:")
