@@ -22,7 +22,7 @@ async def show_profile(message: types.Message):
     u = await db.get_user(user_id)
     stats = await db.get_user_stats(user_id)
 
-    # Обработка None, если заказов еще не было
+    
     total_orders = stats['total_orders'] or 0
     total_stars = stats['total_stars'] or 0
     total_spent = stats['total_spent'] or 0
@@ -47,8 +47,8 @@ async def support(message: types.Message):
         reply_markup=kb.support_kb
     )
 
-@router.message(F.text == "🔙 На главную") # Или "на главное меню" - проверь текст в keyboards.py
+@router.message(F.text == "🔙 На главную") 
 @router.message(F.text == "на главное меню")
 async def back_to_menu_handler(message: types.Message, state: FSMContext):
-    await state.clear() # Очищаем состояния, если пользователь был в процессе покупки
+    await state.clear() 
     await message.answer("Вы вернулись в главное меню", reply_markup=kb.main_menu)
