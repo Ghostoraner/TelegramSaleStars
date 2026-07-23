@@ -6,14 +6,13 @@ DB_NAME = 'bot_database.db'
 
 async def init_db():
     async with aiosqlite.connect(DB_NAME) as db:
-        # Таблица пользователей
+        
         await db.execute('''CREATE TABLE IF NOT EXISTS users (
             user_id INTEGER PRIMARY KEY,
             username TEXT,
             balance REAL DEFAULT 0,
             reg_date TEXT)''')
 
-        # Таблица заказов (покупки звезд)
         await db.execute('''CREATE TABLE IF NOT EXISTS orders (
             order_id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER,
@@ -46,7 +45,7 @@ async def update_balance(user_id, amount):
         await db.commit()
 
 
-# --- Новые функции для статистики ---
+
 
 async def add_order(user_id, stars_count, price, recipient):
     """Записываем успешную покупку звезд"""
@@ -63,7 +62,7 @@ async def get_user_stats(user_id):
     """Получаем статистику покупок пользователя"""
     async with aiosqlite.connect(DB_NAME) as db:
         db.row_factory = aiosqlite.Row
-        # Считаем сумму потраченных денег и купленных звезд
+      
         sql = "SELECT COUNT(*) as total_orders, SUM(stars_count) as total_stars, SUM(price) as total_spent FROM orders WHERE user_id = ?"
         async with db.execute(sql, (user_id,)) as cursor:
             return await cursor.fetchone()
